@@ -12,6 +12,7 @@ export default function Header () {
 
         <div className="cta">
           <Link to="/registration">Register</Link>
+          <Link to="/login">Login</Link>
         </div>
       </div>
     </header>

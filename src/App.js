@@ -3,8 +3,9 @@ import {Routes, Route} from 'react-router-dom';
 import HomeLayout from './components/homeLayout'; // Home Layout
 import MainLayout from './components/mainLayout'; // Main Layout
 
-import Registration from './pages/Home/Registration';
+import Registration from './pages/Registration';
 import Home from './pages/Home';
+import Login from './pages/Login';
 
 function App () {
   return (
@@ -24,6 +25,14 @@ function App () {
           element={
             <MainLayout>
               <Registration />
+            </MainLayout>
+          }
+        />
+        <Route
+          path="/login"
+          element={
+            <MainLayout>
+              <Login />
             </MainLayout>
           }
         />
