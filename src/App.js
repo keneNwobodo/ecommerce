@@ -1,13 +1,29 @@
-import {Routes, Route} from 'react-router-dom';
-
+import {useState, useEffect} from 'react';
+import {Routes, Route, useNavigate} from 'react-router-dom';
+import {auth} from './firebase/utils';
 import HomeLayout from './components/homeLayout'; // Home Layout
 import MainLayout from './components/mainLayout'; // Main Layout
-
 import Registration from './pages/Registration';
 import Home from './pages/Home';
 import Login from './pages/Login';
 
 function App () {
+  const [currentUser, setCurrentUser] = useState (null);
+  const navigate = useNavigate ();
+
+  useEffect (() => {
+    const unsubscribe = auth.onAuthStateChanged (user => {
+      if (!user) setCurrentUser (currentUser);
+      setCurrentUser (prev => {
+        return {
+          ...prev,
+          currentUser: user,
+        };
+      });
+    });
+
+    return () => unsubscribe ();
+  });
   return (
     <div className="App">
       <Routes>
@@ -15,7 +31,7 @@ function App () {
           exact
           path="/"
           element={
-            <HomeLayout>
+            <HomeLayout currentUser={currentUser}>
               <Home />
             </HomeLayout>
           }
@@ -23,7 +39,7 @@ function App () {
         <Route
           path="/registration"
           element={
-            <MainLayout>
+            <MainLayout currentUser={currentUser}>
               <Registration />
             </MainLayout>
           }
@@ -31,7 +47,7 @@ function App () {
         <Route
           path="/login"
           element={
-            <MainLayout>
+            <MainLayout currentUser={currentUser}>
               <Login />
             </MainLayout>
           }

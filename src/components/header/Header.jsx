@@ -1,8 +1,9 @@
+import {Link} from 'react-router-dom';
+import {auth} from '../../firebase/utils';
 import '../styles.scss';
 import logo from '../../assets/logo.png';
-import {Link} from 'react-router-dom';
 
-export default function Header () {
+export default function Header({currentUser}) {
   return (
     <header className="header">
       <div className="wrapper">
@@ -11,10 +12,17 @@ export default function Header () {
         </div>
 
         <div className="cta">
-          <Link to="/registration">Register</Link>
-          <Link to="/login">Login</Link>
+          {currentUser &&
+            <Link to="/" onClick={() => auth.signOut ()}>LogOut</Link>}
+          {!currentUser && <Link to="/registration">Register</Link>}
+          {!currentUser && <Link to="/login">Login</Link>}
+
         </div>
       </div>
     </header>
   );
 }
+
+Header.defaultProps = {
+  currentUser: null,
+};

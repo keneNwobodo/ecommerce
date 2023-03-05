@@ -1,12 +1,12 @@
 import Footer from '../footer';
 import Header from '../header/Header';
 
-export default function MainLayout({children}) {
+export default function MainLayout (props) {
   return (
     <div>
-      <Header />
+      <Header {...props} />
       <div className="main">
-        {children}
+        {props.children}
       </div>
       <Footer />
     </div>
