@@ -1,7 +1,5 @@
+import Signup from '../../components/signup';
+
 export default function Registration () {
-  return (
-    <div>
-      <h1>Registration</h1>
-    </div>
-  );
+  return <Signup />;
 }
