@@ -6,6 +6,7 @@ import MainLayout from './components/mainLayout'; // Main Layout
 import Registration from './pages/Registration';
 import Home from './pages/Home';
 import Login from './pages/Login';
+import RecoveryPassword from './pages/Recovery';
 
 function App () {
   const [currentUser, setCurrentUser] = useState (null);
@@ -52,7 +53,17 @@ function App () {
             </MainLayout>
           }
         />
+
+        <Route
+          path="/recovery"
+          element={
+            <MainLayout>
+              <RecoveryPassword />
+            </MainLayout>
+          }
+        />
       </Routes>
+
     </div>
   );
 }
