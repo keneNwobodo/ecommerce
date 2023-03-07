@@ -12,6 +12,7 @@ const configWrapper = {
 
 const initialState = {
   email: '',
+  errors: [],
 };
 export default function EmailPassword () {
   const [emails, setEmails] = useState (initialState);
@@ -39,18 +40,29 @@ export default function EmailPassword () {
           console.log ('Password Reset Successful');
           navigate ('/login');
         })
-        .catch (err => {
-          console.log (err, 'Something Went Wrong');
+        .catch (() => {
+          const err = ['Email not found'];
+          setEmails (prev => {
+            return {
+              ...prev,
+              errors: err,
+            };
+          });
         });
     } catch (err) {
       console.log (err);
     }
   };
 
-  const {email} = emails;
+  const {email, errors} = emails;
   return (
     <AuthWrapper {...configWrapper}>
       <div className="formWrapper">
+        {/* 
+        {errors.map ((err, i) => {
+          return <span key={i}>{err}</span>;
+        })} */}
+
         <form onSubmit={handleSubmit}>
           <FormInput
             label="Email:"

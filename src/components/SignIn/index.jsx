@@ -4,6 +4,7 @@ import AuthWrapper from '../authWrapper';
 import FormInput from '../../components/forms/FormInput';
 import Button from '../forms/Button';
 import './styles.scss';
+import {Link} from 'react-router-dom';
 
 const initialState = {
   email: '',
@@ -70,6 +71,12 @@ export default function SignIn () {
                 Log In With Google
               </Button>
             </div>
+          </div>
+
+          <div className="links">
+            <Link to="/recovery">
+              Reset Password
+            </Link>
           </div>
         </form>
       </div>

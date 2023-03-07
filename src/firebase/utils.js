@@ -18,9 +18,10 @@ export const signInWithGoogle = () => signInWithPopup (auth, GoogleProvider);
 export const handleUserProfile = async (user, data) => {
   if (!user) return;
 
-  const {uuid, displayName, email} = auth.user;
+  const {uid, displayName, email} = auth.currentUser;
+
   try {
-    await addDoc (collection (db, `users/${uuid}`), {
+    await addDoc (collection (db, `users/${uid}`), {
       displayName,
       email,
       createdAt: serverTimestamp (),
