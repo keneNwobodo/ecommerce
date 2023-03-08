@@ -1,23 +1,27 @@
 import {useEffect} from 'react';
-import {Routes, Route, useNavigate} from 'react-router-dom';
-import {auth, handleUserProfile} from './firebase/utils';
+import {Routes, Route} from 'react-router-dom';
 import {connect} from 'react-redux';
+import {auth, handleUserProfile} from './firebase/utils';
+import {onSnapshot} from 'firebase/firestore';
+import {setCurrentUser} from './redux/User/action';
 import HomeLayout from './components/homeLayout'; // Home Layout
 import MainLayout from './components/mainLayout'; // Main Layout
 import Registration from './pages/Registration';
 import RecoveryPassword from './pages/Recovery';
-import {setCurrentUser} from './redux/User/action';
+
 import Home from './pages/Home';
 import Login from './pages/Login';
+import Dashboard from './pages/Dashboard';
+import WithAuth from './components/hoc/withAuth';
 
 function App (props) {
-  const navigate = useNavigate ();
+  const {setCurrentUser} = props;
 
   useEffect (() => {
     const unsubscribe = auth.onAuthStateChanged (async user => {
       if (user) {
         const useRef = await handleUserProfile (auth);
-        useRef.onSnapshot (snapshot => {
+        onSnapshot (useRef, snapshot => {
           setCurrentUser ({
             id: snapshot.id,
             ...snapshot.data (),
@@ -30,7 +34,6 @@ function App (props) {
     return () => unsubscribe ();
   });
 
-  const {currentUser} = props;
   return (
     <div className="App">
       <Routes>
@@ -52,24 +55,15 @@ function App (props) {
             </MainLayout>
           }
         />
-        {currentUser
-          ? navigate ('/')
-          : <Route
-              path="/login"
-              element={
-                <MainLayout>
-                  <Login />
-                </MainLayout>
-              }
-            />}
-        {/* <Route
+
+        <Route
           path="/login"
           element={
             <MainLayout>
               <Login />
             </MainLayout>
           }
-        /> */}
+        />
 
         <Route
           path="/recovery"
@@ -77,6 +71,17 @@ function App (props) {
             <MainLayout>
               <RecoveryPassword />
             </MainLayout>
+          }
+        />
+
+        <Route
+          path="/dashboard"
+          element={
+            <WithAuth>
+              <MainLayout>
+                <Dashboard />
+              </MainLayout>
+            </WithAuth>
           }
         />
       </Routes>

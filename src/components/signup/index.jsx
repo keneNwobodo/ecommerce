@@ -1,11 +1,12 @@
 import {useState} from 'react';
-import Button from '../../components/forms/Button';
-import FormInput from '../forms/FormInput';
+import {Link, useNavigate} from 'react-router-dom';
 import {createUserWithEmailAndPassword} from 'firebase/auth';
 import {auth, handleUserProfile} from '../../firebase/utils';
+import Button from '../../components/forms/Button';
+import FormInput from '../forms/FormInput';
+import AuthWrapper from '../authWrapper';
 
 import './styles.scss';
-import AuthWrapper from '../authWrapper';
 
 const initialState = {
   displayName: '',
@@ -21,6 +22,7 @@ const configWrapper = {
 
 export default function Signup () {
   const [user, setUser] = useState (initialState);
+  const navigate = useNavigate ();
 
   const handleChange = e => {
     const {name, value} = e.target;
@@ -55,8 +57,15 @@ export default function Signup () {
         password
       );
       await handleUserProfile (user, {displayName});
-
-      setUser ({...user, user});
+      setUser ({
+        ...user,
+        displayName: '',
+        email: '',
+        password: '',
+        confirmPassword: '',
+        errors: [],
+      });
+      navigate ('/');
     } catch (err) {
       console.log (err.message);
     }
@@ -119,6 +128,12 @@ export default function Signup () {
 
           <Button type="submit">Register</Button>
 
+          <div className="links">
+            Already have an account?
+            <Link to="/login">
+              Log in
+            </Link>
+          </div>
         </form>
       </div>
     </AuthWrapper>

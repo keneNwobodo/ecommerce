@@ -28,6 +28,6 @@ export const handleUserProfile = async (user, data) => {
       ...data,
     });
   } catch (err) {
-    console.log (err);
+    console.log (err + 'FAILED!!!');
   }
 };

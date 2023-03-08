@@ -1,4 +1,18 @@
 .form__wrapper {
    margin: 3rem auto 0;
+
+.links {
+   display: block;
+   width: 100%;
+   margin: 1.5rem auto 0;
+   text-align: center;
+   font-size: 15px;
+
+   a {
+       color: "blue";
+       text-decoration: underline;
+       padding-left: 5px;
+   }
 }
-    
+
+}

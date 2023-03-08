@@ -1,66 +1,66 @@
-import {useState} from 'react';
-import {auth, signInWithGoogle} from '../../firebase/utils';
+import {useEffect, useState} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
+import {Link, useNavigate} from 'react-router-dom';
+import {signInWithGoogle} from '../../firebase/utils';
+import {signInUser} from '../../redux/User/action';
 import AuthWrapper from '../authWrapper';
 import FormInput from '../../components/forms/FormInput';
 import Button from '../forms/Button';
 import './styles.scss';
-import {Link} from 'react-router-dom';
 
-const initialState = {
-  email: '',
-  password: '',
-};
-
-const configWrapper = {
-  headline: 'Log In Page',
-};
+const mapState = ({user}) => ({
+  signInSuccess: user.signInSuccess,
+});
 
 export default function SignIn () {
-  const [user, setUser] = useState (initialState);
+  const [email, setEmail] = useState ('');
+  const [password, setPassword] = useState ('');
+  const dispatch = useDispatch ();
+  const {signInSuccess} = useSelector (mapState);
+  const navigate = useNavigate ();
 
-  const handleChange = e => {
-    setUser (prev => {
-      const {name, value} = e.target;
-      return {
-        ...prev,
-        [name]: value,
-      };
-    });
-  };
+  // Reset the form input fields
+  function resetForm () {
+    setEmail ('');
+    setPassword ('');
+  }
 
-  const handleSubmit = async e => {
+  useEffect (
+    () => {
+      resetForm ();
+      navigate ('/');
+    },
+    [signInSuccess]
+  );
+
+  // Handle Form Submit Func
+  const handleSubmit = e => {
     e.preventDefault ();
-
-    const {email, password} = user;
-
-    try {
-      await signInWithGoogle (auth, email, password);
-      setUser ({...user, user});
-    } catch (err) {
-      console.log (err);
-    }
+    dispatch (signInUser ({email, password}));
+    resetForm ();
   };
 
-  const {email, password} = user;
+  const configWrapper = {
+    headline: 'Log In Page',
+  };
+
   return (
     <AuthWrapper {...configWrapper}>
       <div className="form__wrapper">
-        <form action="" onSubmit={handleSubmit}>
 
+        <form action="" onSubmit={handleSubmit}>
           <FormInput
             type="email"
-            name="email"
             value={email}
             placeholder="Email"
-            handleChange={handleChange}
+            handleChange={e => setEmail (e.target.value)}
           />
 
           <FormInput
             type="password"
-            name="password"
             value={password}
             placeholder="Password"
-            handleChange={handleChange}
+            handleChange={e => setPassword (e.target.value)}
           />
 
           <Button type="submit">Log In</Button>
@@ -78,6 +78,7 @@ export default function SignIn () {
               Reset Password
             </Link>
           </div>
+
         </form>
       </div>
     </AuthWrapper>
