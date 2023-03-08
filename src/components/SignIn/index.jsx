@@ -13,10 +13,10 @@ const mapState = ({user}) => ({
 });
 
 export default function SignIn () {
+  const {signInSuccess} = useSelector (mapState);
   const [email, setEmail] = useState ('');
   const [password, setPassword] = useState ('');
   const dispatch = useDispatch ();
-  const {signInSuccess} = useSelector (mapState);
   const navigate = useNavigate ();
 
   // Reset the form input fields
@@ -28,7 +28,7 @@ export default function SignIn () {
   useEffect (
     () => {
       resetForm ();
-      navigate ('/');
+      // navigate ('/');
     },
     [signInSuccess]
   );

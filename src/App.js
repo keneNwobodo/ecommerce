@@ -8,7 +8,6 @@ import HomeLayout from './components/homeLayout'; // Home Layout
 import MainLayout from './components/mainLayout'; // Main Layout
 import Registration from './pages/Registration';
 import RecoveryPassword from './pages/Recovery';
-
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';

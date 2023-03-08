@@ -13,7 +13,7 @@ function Header () {
     <header className="header">
       <div className="wrapper">
         <div className="logo">
-          <Link to="/"><img src={logo} alt="logo shot" /></Link>
+          <Link to="/"><img src={logo} alt="logo" /></Link>
         </div>
 
         <div className="cta">

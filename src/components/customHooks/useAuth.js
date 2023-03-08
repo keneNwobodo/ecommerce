@@ -13,9 +13,11 @@ export default function useAuth () {
 
   useEffect (
     () => {
-      if (!currentUser) navigate ('/login');
+      if (!currentUser) {
+        navigate ('/login');
+      }
+      return currentUser;
     },
     [currentUser, navigate]
   );
-  return currentUser;
 }
