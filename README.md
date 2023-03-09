@@ -1,6 +1,6 @@
-# Ecommerce Application
+# E-commerce Application
 
-This is an ecommerce web based application. 
+This is an e-commerce web based application. 
 
 ## Available Scripts
 

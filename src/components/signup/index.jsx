@@ -1,13 +1,19 @@
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
 import {Link, useNavigate} from 'react-router-dom';
-import {createUserWithEmailAndPassword} from 'firebase/auth';
-import {auth, handleUserProfile} from '../../firebase/utils';
+import {signUpUser} from '../../redux/User/action';
 import Button from '../../components/forms/Button';
 import FormInput from '../forms/FormInput';
 import AuthWrapper from '../authWrapper';
 
 import './styles.scss';
 
+const mapState = ({user}) => ({
+  signUpSuccess: user.signUpSuccess,
+  signUpError: user.signUpError,
+});
+
+// initial states
 const initialState = {
   displayName: '',
   email: '',
@@ -21,8 +27,47 @@ const configWrapper = {
 };
 
 export default function Signup () {
+  const {signUpSuccess, signUpError} = useSelector (mapState);
   const [user, setUser] = useState (initialState);
   const navigate = useNavigate ();
+  const dispatch = useDispatch ();
+
+  useEffect (
+    () => {
+      if (signUpSuccess) {
+        reset ();
+        // navigate ('/');
+      }
+    },
+    [signUpSuccess]
+  );
+
+  useEffect (
+    () => {
+      if (Array.isArray (signUpError) && signUpError.length > 0) {
+        setUser (prev => {
+          return {
+            ...prev,
+            errors: signUpError,
+          };
+        });
+      }
+    },
+    [signUpError]
+  );
+
+  useEffect (() => {}, []);
+
+  function reset () {
+    return {
+      ...user,
+      displayName: '',
+      email: '',
+      password: '',
+      confirmPassword: '',
+      errors: [],
+    };
+  }
 
   const handleChange = e => {
     const {name, value} = e.target;
@@ -37,39 +82,16 @@ export default function Signup () {
   // Handle Form Submit
   const handleFormSubmit = async e => {
     e.preventDefault ();
-
-    const {displayName, email, password, confirmPassword, errors} = user;
-
-    if (password !== confirmPassword) {
-      const err = ['Password does not match'];
-      setUser (prev => {
-        return {
-          ...prev,
-          errors: err,
-        };
-      });
-    }
-
-    try {
-      const {user} = await createUserWithEmailAndPassword (
-        auth,
+    dispatch (
+      signUpUser ({
+        displayName,
         email,
-        password
-      );
-      await handleUserProfile (user, {displayName});
-      setUser ({
-        ...user,
-        displayName: '',
-        email: '',
-        password: '',
-        confirmPassword: '',
-        errors: [],
-      });
-      navigate ('/');
-    } catch (err) {
-      console.log (err.message);
-    }
+        password,
+        confirmPassword,
+      })
+    );
   };
+
   // Destructure the state variables from the state holder
   const {displayName, email, password, confirmPassword, errors} = user;
   return (
