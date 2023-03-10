@@ -1,8 +1,9 @@
 import {
   createUserWithEmailAndPassword,
+  sendPasswordResetEmail,
   signInWithEmailAndPassword,
 } from 'firebase/auth';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useNavigate} from 'react-redux';
 import {auth, handleUserProfile} from '../../firebase/utils';
 import userTypes from '../User/types';
 
@@ -48,4 +49,27 @@ export const signUpUser = ({
   } catch (err) {
     // console.log (err.message);
   }
+};
+
+export const resetPassword = ({email}) => async dispatch => {
+  // Email reset configurations
+  const config = {
+    url: 'http://localhost:3000/login',
+  };
+  try {
+    await sendPasswordResetEmail (auth, email, config)
+      .then (() => {
+        dispatch ({
+          type: userTypes.RESET_PASSWORD_SUCCESS,
+          payload: true,
+        });
+      })
+      .catch (() => {
+        const err = ['Email not found!'];
+        dispatch ({
+          type: userTypes.RESET_PASSWORD_FAILURE,
+          payload: err,
+        });
+      });
+  } catch (error) {}
 };

@@ -56,8 +56,6 @@ export default function Signup () {
     [signUpError]
   );
 
-  useEffect (() => {}, []);
-
   function reset () {
     return {
       ...user,

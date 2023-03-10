@@ -1,5 +1,7 @@
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
+import {useSelector, useDispatch} from 'react-redux';
 import {useNavigate} from 'react-router-dom';
+import {resetPassword} from '../../redux/User/action';
 import AuthWrapper from '../authWrapper';
 import FormInput from '../forms/FormInput';
 import Button from '../forms/Button';
@@ -10,32 +12,41 @@ const configWrapper = {
   headline: 'Password Reset',
 };
 
+const mapState = ({user}) => ({
+  resetPasswordSuccess: user.resetPasswordSuccess,
+  resetPasswordFailure: user.resetPasswordFailure,
+});
 export default function EmailPassword () {
   const [email, setEmail] = useState ('');
   const [errors, setErrors] = useState ([]);
+  const {resetPasswordSuccess, resetPasswordFailure} = useSelector (mapState);
   const navigate = useNavigate ();
+  const dispatch = useDispatch ();
 
+  useEffect (
+    () => {
+      if (resetPasswordSuccess) {
+        navigate ('/login');
+      }
+    },
+    [resetPasswordSuccess]
+  );
+
+  useEffect (
+    () => {
+      if (
+        Array.isArray (resetPasswordFailure) &&
+        resetPasswordFailure.length > 0
+      ) {
+        setErrors (resetPasswordFailure);
+      }
+    },
+    [resetPasswordFailure]
+  );
   // Handle Submit Func
-  const handleSubmit = async e => {
+  const handleSubmit = e => {
     e.preventDefault ();
-    try {
-      // Email reset configurations
-      const config = {
-        url: 'http://localhost:3000/login',
-      };
-
-      await sendPasswordResetEmail (auth, email, config)
-        .then (() => {
-          navigate ('/login');
-        })
-        .catch (() => {
-          const err = ['Email not found'];
-          setEmail ('');
-          setErrors (err);
-        });
-    } catch (err) {
-      // console.log (err);
-    }
+    dispatch (resetPassword ({email}));
   };
 
   return (
