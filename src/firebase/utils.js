@@ -10,17 +10,29 @@ const app = initializeApp (firebaseConfig);
 export const auth = getAuth (app);
 export const db = getFirestore (app);
 
-const GoogleProvider = new GoogleAuthProvider ();
+export const GoogleProvider = new GoogleAuthProvider ();
 
 // Add custom providers
 GoogleProvider.setCustomParameters ({prompt: 'select_account'});
-export const signInWithGoogle = () => signInWithPopup (auth, GoogleProvider);
 
 export const handleUserProfile = async (user, data) => {
   if (!user) return;
-  const {uid} = user;
-  console.log (uid);
+  console.log ('user', user);
+  const {uid} = user.currentUser;
+  // console.log (uid);
+  // const {displayName, email, uid} = user.currentUser;
+  // try {
+  //   var userRef = await addDoc (collection (db, `users`), {
+  //     displayName,
+  //     email,
+  //     createdAt: serverTimestamp (),
+  //     ...data,
+  //   });
+  // } catch (err) {
+  //   console.log (err);
+  // }
 
+  // return userRef;
   const userRef = doc (`users/${uid}`);
   const snapshot = await userRef.get ();
 

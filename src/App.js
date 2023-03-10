@@ -1,6 +1,6 @@
 import {useEffect} from 'react';
 import {Routes, Route} from 'react-router-dom';
-import {connect} from 'react-redux';
+import {useDispatch} from 'react-redux';
 import {auth, handleUserProfile} from './firebase/utils';
 import {onSnapshot} from 'firebase/firestore';
 import {setCurrentUser} from './redux/User/action';
@@ -13,21 +13,23 @@ import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import WithAuth from './components/hoc/withAuth';
 
-function App (props) {
-  const {setCurrentUser} = props;
+function App () {
+  const dispatch = useDispatch ();
 
   useEffect (() => {
     const unsubscribe = auth.onAuthStateChanged (async user => {
       if (user) {
         const useRef = await handleUserProfile (auth);
         onSnapshot (useRef, snapshot => {
-          setCurrentUser ({
-            id: snapshot.id,
-            ...snapshot.data (),
-          });
+          dispatch (
+            setCurrentUser ({
+              id: snapshot.id,
+              ...snapshot.data (),
+            })
+          );
         });
       }
-      setCurrentUser (user);
+      dispatch (setCurrentUser (user));
     });
 
     return () => unsubscribe ();
@@ -89,13 +91,4 @@ function App (props) {
   );
 }
 
-// Map the states from the state object
-const mapStateToProps = ({user}) => ({
-  currentUser: user.currentUser,
-});
-
-const mapDispatchToProps = dispatch => ({
-  setCurrentUser: user => dispatch (setCurrentUser (user)),
-});
-
-export default connect (mapStateToProps, mapDispatchToProps) (App);
+export default App;

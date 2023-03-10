@@ -2,14 +2,18 @@ import {
   createUserWithEmailAndPassword,
   sendPasswordResetEmail,
   signInWithEmailAndPassword,
+  signInWithPopup,
 } from 'firebase/auth';
-import {useDispatch, useNavigate} from 'react-redux';
-import {auth, handleUserProfile} from '../../firebase/utils';
+import {auth, GoogleProvider, handleUserProfile} from '../../firebase/utils';
 import userTypes from '../User/types';
 
 export const setCurrentUser = user => ({
   type: userTypes.SET_CURRENT_USER,
   payload: user,
+});
+
+export const resetAuthAllForms = () => ({
+  type: userTypes.AUTH_RESET_FORM,
 });
 
 export const signInUser = ({email, password}) => async dispatch => {
@@ -72,4 +76,17 @@ export const resetPassword = ({email}) => async dispatch => {
         });
       });
   } catch (error) {}
+};
+
+export const signInWithGoogle = () => async dispatch => {
+  try {
+    await signInWithPopup (auth, GoogleProvider).then (() => {
+      dispatch ({
+        type: userTypes.SIGN_IN_SUCCESS,
+        payload: true,
+      });
+    });
+  } catch (err) {
+    // console.log (err);
+  }
 };

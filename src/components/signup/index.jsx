@@ -1,7 +1,7 @@
 import {useState, useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {Link, useNavigate} from 'react-router-dom';
-import {signUpUser} from '../../redux/User/action';
+import {resetAuthAllForms, signUpUser} from '../../redux/User/action';
 import Button from '../../components/forms/Button';
 import FormInput from '../forms/FormInput';
 import AuthWrapper from '../authWrapper';
@@ -36,6 +36,7 @@ export default function Signup () {
     () => {
       if (signUpSuccess) {
         reset ();
+        dispatch (resetAuthAllForms ());
         // navigate ('/');
       }
     },

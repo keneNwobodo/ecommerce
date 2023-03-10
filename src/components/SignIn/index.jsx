@@ -1,8 +1,8 @@
 import {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {Link, useNavigate} from 'react-router-dom';
-import {signInWithGoogle} from '../../firebase/utils';
-import {signInUser} from '../../redux/User/action';
+import {resetAuthAllForms, signInUser} from '../../redux/User/action';
+import {signInWithGoogle} from '../../redux/User/action';
 import AuthWrapper from '../authWrapper';
 import FormInput from '../../components/forms/FormInput';
 import Button from '../forms/Button';
@@ -27,8 +27,11 @@ export default function SignIn () {
 
   useEffect (
     () => {
-      resetForm ();
-      // navigate ('/');
+      if (signInSuccess) {
+        resetForm ();
+        dispatch (resetAuthAllForms ());
+        // navigate ('/');
+      }
     },
     [signInSuccess]
   );
@@ -38,6 +41,10 @@ export default function SignIn () {
     e.preventDefault ();
     dispatch (signInUser ({email, password}));
     resetForm ();
+  };
+
+  const handleGoogleSignIn = () => {
+    dispatch (signInWithGoogle ());
   };
 
   const configWrapper = {
@@ -67,7 +74,7 @@ export default function SignIn () {
 
           <div className="form__social">
             <div className="form__row">
-              <Button onClick={signInWithGoogle}>
+              <Button onClick={handleGoogleSignIn}>
                 Log In With Google
               </Button>
             </div>
