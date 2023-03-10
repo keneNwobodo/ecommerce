@@ -5,8 +5,6 @@ import {resetPassword} from '../../redux/User/action';
 import AuthWrapper from '../authWrapper';
 import FormInput from '../forms/FormInput';
 import Button from '../forms/Button';
-import {auth} from '../../firebase/utils';
-import {sendPasswordResetEmail} from 'firebase/auth';
 
 const configWrapper = {
   headline: 'Password Reset',
