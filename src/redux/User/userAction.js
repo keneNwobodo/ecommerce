@@ -5,7 +5,17 @@ import {
   signInWithPopup,
 } from 'firebase/auth';
 import {auth, GoogleProvider, handleUserProfile} from '../../firebase/utils';
-import userTypes from '../User/types';
+import userTypes from './userTypes';
+
+export const emailSignInStart = userCredentials => ({
+  type: userTypes.EMAIL_SIGN_IN_START,
+  payload: userCredentials,
+});
+
+export const signInSuccess = user => ({
+  type: userTypes.SIGN_IN_SUCCESS,
+  payload: user,
+});
 
 export const setCurrentUser = user => ({
   type: userTypes.SET_CURRENT_USER,

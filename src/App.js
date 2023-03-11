@@ -3,7 +3,7 @@ import {Routes, Route} from 'react-router-dom';
 import {useDispatch} from 'react-redux';
 import {auth, handleUserProfile} from './firebase/utils';
 import {onSnapshot} from 'firebase/firestore';
-import {setCurrentUser} from './redux/User/action';
+import {setCurrentUser} from './redux/User/userAction';
 import HomeLayout from './components/homeLayout'; // Home Layout
 import MainLayout from './components/mainLayout'; // Main Layout
 import Registration from './pages/Registration';

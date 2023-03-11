@@ -1,7 +1,7 @@
 import {useState, useEffect} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import {useNavigate} from 'react-router-dom';
-import {resetAuthAllForms, resetPassword} from '../../redux/User/action';
+import {resetAuthAllForms, resetPassword} from '../../redux/User/userAction';
 import AuthWrapper from '../authWrapper';
 import FormInput from '../forms/FormInput';
 import Button from '../forms/Button';

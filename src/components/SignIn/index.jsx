@@ -1,8 +1,8 @@
 import {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {Link, useNavigate} from 'react-router-dom';
-import {resetAuthAllForms, signInUser} from '../../redux/User/action';
-import {signInWithGoogle} from '../../redux/User/action';
+import {resetAuthAllForms, signInUser} from '../../redux/User/userAction';
+import {signInWithGoogle} from '../../redux/User/userAction';
 import AuthWrapper from '../authWrapper';
 import FormInput from '../../components/forms/FormInput';
 import Button from '../forms/Button';
