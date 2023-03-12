@@ -1,7 +1,11 @@
 import {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {Link, useNavigate} from 'react-router-dom';
-import {resetAuthAllForms, signInUser} from '../../redux/User/userAction';
+import {
+  emailSignInStart,
+  resetAuthAllForms,
+  signInUser,
+} from '../../redux/User/userAction';
 import {signInWithGoogle} from '../../redux/User/userAction';
 import AuthWrapper from '../authWrapper';
 import FormInput from '../../components/forms/FormInput';
@@ -39,7 +43,7 @@ export default function SignIn () {
   // Handle Form Submit Func
   const handleSubmit = e => {
     e.preventDefault ();
-    dispatch (signInUser ({email, password}));
+    dispatch (emailSignInStart ({email, password}));
     resetForm ();
   };
 

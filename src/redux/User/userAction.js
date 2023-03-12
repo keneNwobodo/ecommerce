@@ -1,7 +1,6 @@
 import {
   createUserWithEmailAndPassword,
   sendPasswordResetEmail,
-  signInWithEmailAndPassword,
   signInWithPopup,
 } from 'firebase/auth';
 import {auth, GoogleProvider, handleUserProfile} from '../../firebase/utils';
@@ -26,17 +25,17 @@ export const resetAuthAllForms = () => ({
   type: userTypes.AUTH_RESET_FORM,
 });
 
-export const signInUser = ({email, password}) => async dispatch => {
-  try {
-    await signInWithEmailAndPassword (auth, email, password);
-    dispatch ({
-      type: userTypes.SIGN_IN_SUCCESS,
-      payload: true,
-    });
-  } catch (err) {
-    console.log (err);
-  }
-};
+// export const signInUser = ({email, password}) => async dispatch => {
+//   try {
+//     await signInWithEmailAndPassword (auth, email, password);
+//     dispatch ({
+//       type: userTypes.SIGN_IN_SUCCESS,
+//       payload: true,
+//     });
+//   } catch (err) {
+//     console.log (err);
+//   }
+// };
 
 export const signUpUser = ({
   displayName,
